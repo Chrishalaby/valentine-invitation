@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'valentine invitation';
 
   noButtonTexts: string[] = [
@@ -29,12 +29,24 @@ export class AppComponent {
     "You're breaking my heart ;(",
     'I disabled myself, now click yes',
   ];
+
+  listedNames: string[] = ['Sofie', 'Sara'];
   currentNoButtonTextIndex: number = 0;
-  yesButtonScale: number = 1; // Start scale
-  noButtonDisabled: boolean = false; // New property to track "No" button state
-  noButtonMargin: string = '0px'; // New property to track "No" button margin
+  yesButtonScale: number = 1;
+  noButtonDisabled: boolean = false;
+  noButtonMargin: string = '0px';
 
   clickNoAgain: boolean = false;
+  nameListed: boolean = false;
+  partnerName: string = '';
+
+  ngOnInit() {
+    const params = new URLSearchParams(window.location.search);
+    this.partnerName = params.get('partner') || '';
+    if (this.listedNames.includes(this.partnerName)) {
+      this.nameListed = true;
+    }
+  }
 
   get noButtonText(): string {
     return this.noButtonTexts[this.currentNoButtonTextIndex] || 'No';
@@ -44,14 +56,14 @@ export class AppComponent {
     if (this.currentNoButtonTextIndex < this.noButtonTexts.length - 1) {
       this.currentNoButtonTextIndex++;
       this.yesButtonScale += 0.5;
-      this.noButtonMargin = `${this.currentNoButtonTextIndex * 10}px`; // Increase margin
+      this.noButtonMargin = `${this.currentNoButtonTextIndex * 10}px`;
     } else {
-      this.noButtonDisabled = true; // Disable the "No" button at the end
+      this.noButtonDisabled = true;
     }
   }
 
   onYesClick(): void {
-    alert('I LOVE YOU!');
+    alert(`I LOVE YOU ${this.partnerName}!`);
     this.yesButtonScale = 1; // Reset scale
   }
 }

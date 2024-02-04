@@ -1,10 +1,10 @@
-<div class="flex">
+<section class="flex" *ngIf="nameListed">
   <img
     class="fit"
     src="https://gifdb.com/images/high/cute-love-bear-roses-ou7zho5oosxnpo6k.gif"
     alt="Love Bear"
   />
-  <h1 class="header">Sofie will you be my Valentine?</h1>
+  <h1 class="header">{{ this.partnerName }} will you be my Valentine?</h1>
 
   <button
     (click)="onYesClick()"
@@ -22,4 +22,7 @@
   >
     {{ noButtonText }}
   </button>
-</div>
+</section>
+<section *ngIf="!nameListed">
+  <h1>Invalid Entry</h1>
+</section>
